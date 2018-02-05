@@ -20,7 +20,13 @@ public class SampleService {
 
     @Transactional
     public void doSome() {
+        logger.info("raise event");
         Events.raise(new SampleEvent());
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+        }
+
         Integer result = jdbcTemplate.query("select 1", new ResultSetExtractor<Integer>() {
             @Override
             public Integer extractData(ResultSet resultSet) throws SQLException, DataAccessException {
@@ -30,7 +36,7 @@ public class SampleService {
         });
         logger.info("doSome: query result = {}", result);
         try {
-            Thread.sleep(3000L);
+            Thread.sleep(2000L);
         } catch (InterruptedException e) {
         }
     }
